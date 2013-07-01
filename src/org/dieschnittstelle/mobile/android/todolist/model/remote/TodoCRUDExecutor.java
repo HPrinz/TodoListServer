@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.dieschnittstelle.mobile.android.todolist.model.Todo;
-import org.dieschnittstelle.mobile.android.todolist.model.ITodoCRUDOperations;
 
 public class TodoCRUDExecutor {
 
@@ -31,12 +30,7 @@ public class TodoCRUDExecutor {
 	 * the list of data items, note that the list is *static* as for each client
 	 * request a new instance of this class will be created!
 	 */
-	private List<Todo> todos = new ArrayList<Todo>();
-
-	/**
-	 * we assign the ids here
-	 */
-	private static long idCount = 0;
+	private final List<Todo> todos = new ArrayList<Todo>();
 
 	public TodoCRUDExecutor() {
 
@@ -47,23 +41,23 @@ public class TodoCRUDExecutor {
 	}
 
 	public List<Todo> readAllTodos() {
-//		logger.info("readAllTodos(): " + todos);
+		// logger.info("readAllTodos(): " + todos);
 
 		return this.todos;
 	}
 
 	public Todo createTodo(Todo item) {
-//		logger.info("createTodo(): " + item);
-		item.setId(idCount++);
+		// logger.info("createTodo(): " + item);
+		// item.setId(idCount++);
 
 		todos.add(item);
-//		logger.info("createTodo(): todos are now: " + todos);
+		// logger.info("createTodo(): todos are now: " + todos);
 
 		return item;
 	}
 
 	public boolean deleteTodo(final long itemId) {
-//		logger.info("deleteItem(): " + itemId);
+		// logger.info("deleteItem(): " + itemId);
 
 		boolean removed = todos.remove(new Todo() {
 			@Override
@@ -76,7 +70,7 @@ public class TodoCRUDExecutor {
 	}
 
 	public Todo updateTodo(Todo item) {
-//		logger.info("updateItem(): " + item + ", todos are: " + todos);
+		// logger.info("updateItem(): " + item + ", todos are: " + todos);
 
 		return todos.get(todos.indexOf(item)).updateFrom(item);
 	}
@@ -92,7 +86,7 @@ public class TodoCRUDExecutor {
 	}
 
 	public void store() {
-//		logger.info("store()...");
+		// logger.info("store()...");
 
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(this.todoDatabaseFile));
@@ -109,11 +103,11 @@ public class TodoCRUDExecutor {
 			throw new RuntimeException(e);
 		}
 
-//		logger.info("store(): done.");
+		// logger.info("store(): done.");
 	}
 
 	public void load() {
-//		logger.info("load()...");
+		// logger.info("load()...");
 
 		try {
 			if (!this.todoDatabaseFile.exists()) {
@@ -126,7 +120,7 @@ public class TodoCRUDExecutor {
 
 				// first we try to read the currentTodoId
 				this.currentTodoId = ois.readInt();
-//				logger.info("load(): read todoId: " + currentTodoId);
+				// logger.info("load(): read todoId: " + currentTodoId);
 
 				// then try to read the objects
 				Todo obj = null;
@@ -147,7 +141,7 @@ public class TodoCRUDExecutor {
 			throw new RuntimeException(e);
 		}
 
-//		logger.info("load(): todos are: " + todos);
+		// logger.info("load(): todos are: " + todos);
 	}
 
 	public boolean deletAll() {
